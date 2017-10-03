@@ -1,0 +1,22 @@
+{
+  "name": "wheeler-2d-phaser",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/crampas/wheeler-2d-phaser-js.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/crampas/wheeler-2d-phaser-js/issues"
+  },
+  "homepage": "https://github.com/crampas/wheeler-2d-phaser-js#readme",
+  "dependencies": {
+    "phaser": "^2.6.2"
+  }
+}
