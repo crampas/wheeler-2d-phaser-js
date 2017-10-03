@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc",
+    "pack": "npm run tsc && browserify build/tsc/main.js > dist/bundle.js"
   },
   "repository": {
     "type": "git",
@@ -18,5 +20,11 @@
   "homepage": "https://github.com/crampas/wheeler-2d-phaser-js#readme",
   "dependencies": {
     "phaser": "^2.6.2"
+  },
+  "devDependencies": {
+    "browserify": "^14.4.0",
+    "http-server": "^0.10.0",
+    "typescript": "^2.5.3",
+    "wheeler-2d": "file:../wheeler-2d-js/wheeler-2d-1.0.0.tgz"
   }
 }
