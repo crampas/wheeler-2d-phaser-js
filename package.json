@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
-    "pack": "npm run tsc && browserify build/tsc/main.js > dist/bundle.js"
+    "pack": "mkdir dist && npm run tsc && browserify build/tsc/main.js > dist/bundle.js",
+    "copy.web": "ncp src/web dist && ncp node_modules/phaser/build/phaser.min.js dist/phaser.min.js",
+    "clean": "rm -fr dist && rm -fr build"
   },
   "repository": {
     "type": "git",
@@ -24,6 +26,7 @@
   "devDependencies": {
     "browserify": "^14.4.0",
     "http-server": "^0.10.0",
+    "ncp": "^2.0.0",
     "typescript": "^2.5.3",
     "wheeler-2d": "file:../wheeler-2d-js/wheeler-2d-1.0.0.tgz"
   }
