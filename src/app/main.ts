@@ -10,6 +10,9 @@ class BootState extends Phaser.State {
     public carSprite: Phaser.Sprite = null;
     public helmSprite: Phaser.Sprite = null;
     public tenderSprite: Phaser.Sprite = null;
+
+    public map: Phaser.Tilemap = null;
+    public backgroundlayer: Phaser.TilemapLayer = null;
     
     public cursors: Phaser.CursorKeys;
 
@@ -21,6 +24,9 @@ class BootState extends Phaser.State {
 
         this.cursors = game.input.keyboard.createCursorKeys();
 
+        this.load.tilemap('desert', 'tileset/desert.json', null, Phaser.Tilemap.TILED_JSON);
+        this.load.image('tmw_desert_spacing', 'tileset/tmw_desert_spacing.png');
+
 
         this.game.load.image('logo', 'phaser2.png');
         this.game.load.image('car', 'car.png');
@@ -31,35 +37,40 @@ class BootState extends Phaser.State {
 
     create() {
 
-        this.game.world.scale.setTo(0.25, 0.25);
-        this.game.world.setBounds(0, 0, 20000, 20000);
-        this.game.add.tileSprite(0, 0, 20000, 20000, 'background');
+        // this.game.world.scale.setTo(0.25, 0.25);
+        // this.game.world.setBounds(0, 0, 20000, 20000);
+
+
+        this.map = this.game.add.tilemap('desert');
+        this.map.addTilesetImage('Desert', 'tmw_desert_spacing');
+        this.backgroundlayer = this.map.createLayer('Ground');
+        this.backgroundlayer.resizeWorld();
+
+        // this.game.add.tileSprite(0, 0, 20000, 20000, 'background');
 
         this.car = new Car(new Vector(1000, 1000));
-        this.car.axis = -300;
-        this.car.velocity = 15 / 3.6 * 100;
+        this.car.axis = -30;
+        this.car.velocity = 0;
         this.car.helm = new Vector(10, 2).normalize();
 
-        this.tender = new Vehicle(new Vector(550, 1000));
-        this.tender.axis = -300;
+        this.tender = new Vehicle(new Vector(960, 1000));
+        this.tender.axis = -30;
         this.car.tender = this.tender;
 
 
         this.carSprite = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'car');
         this.carSprite.anchor.setTo(0.8, 0.5);
-        this.carSprite.width = 500;
-        this.carSprite.height = 200;
+        this.carSprite.width = 50;
+        this.carSprite.height = 20;
 
         this.helmSprite = this.game.make.sprite(0,0, "car-helm");
         this.helmSprite.anchor.setTo(0, 0.5);
-        this.helmSprite.width = 100;
-        this.helmSprite.height = 200;
         this.carSprite.addChild(this.helmSprite);
         
         this.tenderSprite = this.game.make.sprite(0,0, "tender");
         this.tenderSprite.anchor.setTo(1, 0.5);
-        this.tenderSprite.width = 600;
-        this.tenderSprite.height = 300;
+        this.tenderSprite.width = 60;
+        this.tenderSprite.height = 30;
         this.tenderSprite.x = 550;
         this.tenderSprite.y = 1000;
         this.game.add.existing(this.tenderSprite);
@@ -69,7 +80,7 @@ class BootState extends Phaser.State {
     }
 
     public render() {
-        game.debug.text("elapsedMS: " + this.car.helm, 32, 32);
+        game.debug.text("elapsedMS: " + this.game.time.elapsedMS, 32, 32);
     }
 
     update() {
@@ -82,6 +93,13 @@ class BootState extends Phaser.State {
         }
         else {
             this.car.helm = Angle.fromDegre(0);
+        }
+
+        if (this.cursors.up.isDown) {
+            this.car.velocity += 1;
+        }
+        else if (this.cursors.down.isDown) {
+            this.car.velocity -= 1;
         }
 
         
