@@ -27,6 +27,11 @@ class BootState extends Phaser.State {
         this.load.tilemap('desert', 'tileset/desert.json', null, Phaser.Tilemap.TILED_JSON);
         this.load.image('tmw_desert_spacing', 'tileset/tmw_desert_spacing.png');
 
+        this.load.tilemap('wheeler', 'tileset/wheeler/wheeler-20x20.json', null, Phaser.Tilemap.TILED_JSON);
+        this.load.image('wheeler-street', 'tileset/wheeler/street-100.png');
+        this.load.image('wheeler-building', 'tileset/wheeler/building-100.png');
+        this.load.image('wheeler-factory', 'tileset/wheeler/factory-100.png');
+
 
         this.game.load.image('logo', 'phaser2.png');
         this.game.load.image('car', 'car.png');
@@ -41,10 +46,20 @@ class BootState extends Phaser.State {
         // this.game.world.setBounds(0, 0, 20000, 20000);
 
 
-        this.map = this.game.add.tilemap('desert');
-        this.map.addTilesetImage('Desert', 'tmw_desert_spacing');
-        this.backgroundlayer = this.map.createLayer('Ground');
+        // this.map = this.game.add.tilemap('desert');
+        // this.map.addTilesetImage('Desert', 'tmw_desert_spacing');
+        // this.backgroundlayer = this.map.createLayer('Ground');
+        // this.backgroundlayer.resizeWorld();
+
+        this.map = this.game.add.tilemap('wheeler');
+        this.map.addTilesetImage('street-100', 'wheeler-street');
+        this.map.addTilesetImage('factory-100', 'wheeler-factory');
+        this.map.addTilesetImage('building-100', 'wheeler-building');
+        this.backgroundlayer = this.map.createLayer('Background');
         this.backgroundlayer.resizeWorld();
+
+
+
 
         // this.game.add.tileSprite(0, 0, 20000, 20000, 'background');
 
