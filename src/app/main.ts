@@ -12,7 +12,8 @@ class BootState extends Phaser.State {
     public tenderSprite: Phaser.Sprite = null;
 
     public map: Phaser.Tilemap = null;
-    public backgroundlayer: Phaser.TilemapLayer = null;
+    public backgroundLayer: Phaser.TilemapLayer = null;
+    public blockedLayer: Phaser.TilemapLayer = null;
     
     public cursors: Phaser.CursorKeys;
 
@@ -42,6 +43,8 @@ class BootState extends Phaser.State {
 
     create() {
 
+        this.game.physics.startSystem(Phaser.Physics.ARCADE);
+
         // this.game.world.scale.setTo(0.25, 0.25);
         // this.game.world.setBounds(0, 0, 20000, 20000);
 
@@ -55,20 +58,20 @@ class BootState extends Phaser.State {
         this.map.addTilesetImage('street-100', 'wheeler-street');
         this.map.addTilesetImage('factory-100', 'wheeler-factory');
         this.map.addTilesetImage('building-100', 'wheeler-building');
-        this.backgroundlayer = this.map.createLayer('Background');
-        this.backgroundlayer.resizeWorld();
+
+        this.backgroundLayer = this.map.createLayer('Background');
+        this.backgroundLayer.resizeWorld();
+
+        this.blockedLayer = this.map.createLayer('Blocked');
+        this.map.setCollisionBetween(1, 12, true, 'Blocked');
 
 
-
-
-        // this.game.add.tileSprite(0, 0, 20000, 20000, 'background');
-
-        this.car = new Car(new Vector(1000, 1000));
+        this.car = new Car(new Vector(1200, 950));
         this.car.axis = -30;
         this.car.velocity = 0;
         this.car.helm = new Vector(10, 2).normalize();
 
-        this.tender = new Vehicle(new Vector(960, 1000));
+        this.tender = new Vehicle(new Vector(1160, 950));
         this.tender.axis = -30;
         this.car.tender = this.tender;
 
@@ -77,11 +80,18 @@ class BootState extends Phaser.State {
         this.carSprite.anchor.setTo(0.8, 0.5);
         this.carSprite.width = 50;
         this.carSprite.height = 20;
+        this.game.physics.arcade.enable(this.carSprite);
+
+        // this.game.physics.arcade.collide(this.carSprite, this.blockedLayer, this.onCollide, null, this);
+        this.game.physics.arcade.overlap(this.carSprite, this.blockedLayer, this.onCollide, null, this);
 
         this.helmSprite = this.game.make.sprite(0,0, "car-helm");
         this.helmSprite.anchor.setTo(0, 0.5);
         this.carSprite.addChild(this.helmSprite);
-        
+        this.game.physics.arcade.enable(this.helmSprite);
+
+        this.game.physics.arcade.collide(this.carSprite, this.helmSprite, this.onCollide, null, this);
+
         this.tenderSprite = this.game.make.sprite(0,0, "tender");
         this.tenderSprite.anchor.setTo(1, 0.5);
         this.tenderSprite.width = 60;
@@ -94,6 +104,14 @@ class BootState extends Phaser.State {
         this.game.camera.follow(this.carSprite, Phaser.Camera.FOLLOW_LOCKON, 0.1, 0.1);
     }
 
+    public onCollide(item1, item2) {
+        console.log("onCollide");
+    }
+
+    public processCollide(item1, item2) {
+        console.log("processCollide");
+    }
+        
     public render() {
         game.debug.text("elapsedMS: " + this.game.time.elapsedMS, 32, 32);
     }
@@ -122,6 +140,7 @@ class BootState extends Phaser.State {
         this.carSprite.x = this.car.position.x;
         this.carSprite.y = this.car.position.y;
         this.carSprite.rotation = Angle.getRad(this.car.direction);
+        // this.carSprite.rotation = Angle.getDegre(this.car.direction);
 
         this.helmSprite.rotation = Angle.getRad(this.car.helm);
 
