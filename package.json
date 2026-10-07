@@ -9,7 +9,7 @@
     "pack": "npm run tsc && browserify build/tsc/main.js > dist/bundle.js",
     "copy.web": "ncp src/web dist && ncp node_modules/phaser/build/phaser.min.js dist/phaser.min.js",
     "clean": "rm -fr dist && rm -fr build",
-    "start": "http-server dist"
+    "start": "cd dist && http-server"
   },
   "repository": {
     "type": "git",

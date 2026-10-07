@@ -113,7 +113,7 @@ class BootState extends Phaser.State {
     }
         
     public render() {
-        game.debug.text("elapsedMS: " + this.game.time.elapsedMS, 32, 32);
+        game.debug.text(`elapsedMS: ${this.game.time.elapsedMS}\nv: ${this.car.velocity}`, 32, 32);
     }
 
     update() {
@@ -128,6 +128,7 @@ class BootState extends Phaser.State {
             this.car.helm = Angle.fromDegre(0);
         }
 
+        this.car.velocity *= 0.99;
         if (this.cursors.up.isDown) {
             this.car.velocity += 1;
         }
